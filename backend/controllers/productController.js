@@ -75,18 +75,21 @@ const removeProduct = async (req, res) => {
 }
 
 // function for single product info
+// In your productController.js
 const singleProduct = async (req, res) => {
     try {
-        
-        const { productId } = req.body
-        const product = await productModel.findById(productId)
-        res.json({success:true,product})
-
+        const { productId } = req.params;  // Retrieve the productId from the URL params
+        const product = await productModel.findById(productId);  // Find product by ID
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        res.json({ success: true, product });  // Send back the product data
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-}
+};
+
 
 export { listProducts, addProduct, removeProduct, singleProduct }
 

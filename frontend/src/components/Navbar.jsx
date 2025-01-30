@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 const Navbar = () => {
 
     const navigate = useNavigate()
-    const { userData, backendUrl, setUserData, setIsLoggedin } = useContext(AppContent)
+    const { getCartCount,userData, backendUrl, setUserData, setIsLoggedin } = useContext(AppContent)
 
     const sendVerificationOtp = async () => {
         try {
@@ -97,11 +97,12 @@ const Navbar = () => {
                         </Link>
                     </span>
                     <span className="hover:text-primary">
-                        <button className='hover:text-primary'>
-                            <i className="ri-shopping-bag-line"></i>
-                            <sup className='text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center'>0</sup>
-                        </button>
-                    </span>
+    <Link to='/cart' className='flex items-center'>
+        <i className="ri-shopping-bag-line"></i>
+        <sup className='text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center'>{getCartCount()}</sup>
+    </Link>
+</span>
+
                     <span className="hover:text-primary">
                         <Link to='/wishlist'>
                             <i className="ri-heart-line"></i>

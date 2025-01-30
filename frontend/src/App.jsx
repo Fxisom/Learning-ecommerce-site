@@ -9,6 +9,8 @@ import CategoryPage from './pages/Category/CategoryPage';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import ShopPage from './pages/shop/ShopPage';
+import Product from './pages/shop/Product';
+import Cart from './pages/shop/Cart';
 
 
 
@@ -17,6 +19,7 @@ import ShopPage from './pages/shop/ShopPage';
 // import ScrollToTop from './components/ScrollToTop';
 
 function App() {
+  
   return (
     <div>
      {/* <ScrollToTop></ScrollToTop> */}
@@ -31,6 +34,8 @@ function App() {
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/shop" element={<ShopPage />} />
+        <Route path="/product/:productId" element={<Product />} />
+        <Route path='/cart' element={<Cart />} />
       
      
  
