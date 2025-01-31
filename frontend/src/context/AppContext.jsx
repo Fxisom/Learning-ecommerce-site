@@ -62,6 +62,30 @@ const getCartCount = () => {
   }
   return totalCount;
 }
+const updateQuantity = async (itemId, size, quantity) => {
+
+  let cartData = structuredClone(cartItems);
+
+  cartData[itemId][size] = quantity;
+
+  setCartItems(cartData)
+}
+const getCartAmount = () => {
+  let totalAmount = 0;
+  for (const items in cartItems) {
+      let itemInfo = products.find((product) => product._id === items);
+      for (const item in cartItems[items]) {
+          try {
+              if (cartItems[items][item] > 0) {
+                  totalAmount += itemInfo.price * cartItems[items][item];
+              }
+          } catch (error) {
+            toast.error(error.message)
+          }
+      }
+  }
+  return totalAmount;
+}
 
 
   const getAuthState = async () => {
@@ -107,6 +131,10 @@ const getCartCount = () => {
     getProductsData();
   }, []);
 
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
+
   console.log("Backend URL:", backendUrl);
 
   useEffect(() => {
@@ -122,8 +150,8 @@ const getCartCount = () => {
     userData,
     setUserData,
     getUserData,
-    currency ,addToCart,setCartItems,
-    getCartCount, navigate,delivery_fee
+    currency ,addToCart,setCartItems,cartItems,updateQuantity,
+    getCartCount, navigate,delivery_fee,getCartAmount
   };
 
   return <AppContent.Provider value={value}>{props.children}</AppContent.Provider>;

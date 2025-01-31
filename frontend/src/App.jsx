@@ -11,21 +11,19 @@ import "react-toastify/dist/ReactToastify.css";
 import ShopPage from './pages/shop/ShopPage';
 import Product from './pages/shop/Product';
 import Cart from './pages/shop/Cart';
+import PlaceOrder from './pages/shop/PlaceOrder';
+import Orders from './pages/shop/Orders';
 
 
-
-
-
-// import ScrollToTop from './components/ScrollToTop';
 
 function App() {
-  
+
   return (
     <div>
-     {/* <ScrollToTop></ScrollToTop> */}
-      <ToastContainer /> {/* This will show toasts globally */}
 
-      <Navbar /> {/* The Navbar will be displayed on all pages */}
+      <ToastContainer />
+
+      <Navbar />
 
       <Routes>
         <Route path='/' element={<Home />} />
@@ -36,11 +34,13 @@ function App() {
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/product/:productId" element={<Product />} />
         <Route path='/cart' element={<Cart />} />
-      
-     
- 
+        <Route path='/place-order' element={<PlaceOrder />} />
+        <Route path='/orders' element={<Orders />} />
+
+
+
       </Routes>
-      <Footer /> {/* If you want a footer to appear on all pages */}
+      <Footer />
     </div>
   );
 }
