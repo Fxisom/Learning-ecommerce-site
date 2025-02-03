@@ -50,7 +50,7 @@ const Navbar = () => {
                     <div className='absolute hidden group-hover:block top-full right-0 z-10 text-black pt-10'>
                         <ul className='list-none m-0 p-2 bg-gray-100 text-sm rounded shadow-lg'>
                             {!userData.isAccountVerified && <li onClick={sendVerificationOtp} className='py-1 px-2 hover:bg-gray-200 cursor-pointer'>Verify email</li>}
-
+                             
                             <li onClick={logout} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Logout</li>
                         </ul>
                     </div>
@@ -82,10 +82,10 @@ const Navbar = () => {
                         <Link to="/shop">Shop</Link>
                     </li>
                     <li className="link hover:text-primary">
-                        <Link to="/">Pages</Link>
+                        <Link to="/about">About</Link>
                     </li>
                     <li className="link hover:text-primary">
-                        <Link to="/">Contact</Link>
+                        <Link to="/contact">Contact</Link>
                     </li>
                 </ul>
 

@@ -13,6 +13,8 @@ import Product from './pages/shop/Product';
 import Cart from './pages/shop/Cart';
 import PlaceOrder from './pages/shop/PlaceOrder';
 import Orders from './pages/shop/Orders';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 
 
@@ -36,6 +38,8 @@ function App() {
         <Route path='/cart' element={<Cart />} />
         <Route path='/place-order' element={<PlaceOrder />} />
         <Route path='/orders' element={<Orders />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
 
 
 

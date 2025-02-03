@@ -8,6 +8,8 @@ import header_img from './header_img.png'
 import bin_icon from './bin_icon.png'
 import stripe_logo from './stripe_logo.png'
 import razorpay_logo from './razorpay_logo.png'
+import about_img from './about_img.png'
+import contact_img from './contact_img.png'
 
 export const assets = {
     arrow_icon,
@@ -19,5 +21,7 @@ export const assets = {
     header_img,
     bin_icon,
     stripe_logo,
-    razorpay_logo
+    razorpay_logo,
+    about_img,
+    contact_img
 }

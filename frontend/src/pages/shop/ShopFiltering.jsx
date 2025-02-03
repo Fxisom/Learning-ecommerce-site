@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 const ShopFiltering = ({ filters, filtersState, setFiltersState, clearFilters }) => {
   return (
     <div className='space-y-5 flex-shrink-0'>
-      <h3>Filters</h3>
+      <h3 className='text-2xl'>Filters</h3>
       <div className='flex flex-col space-y-2'>
         <h4 className='font-medium text-lg'>Category</h4>
-        <hr />
+        <hr className="w-24 h-0.5 bg-gray-400 ml-0" />
+
         {filters.categories.map((category) => (
           <label key={category}>
             <input
@@ -26,7 +27,7 @@ const ShopFiltering = ({ filters, filtersState, setFiltersState, clearFilters })
 
       <div className='flex flex-col space-y-2'>
         <h4 className='font-medium text-lg'>Price Range</h4>
-        <hr />
+        <hr className="w-24 h-0.5 bg-gray-400 ml-0" />
         {filters.priceRanges.map((range) => (
           <label key={range.label}>
             <input

@@ -14,7 +14,7 @@ const filters = {
 };
 
 const ShopPage = () => {
-  const { products, getProductsData } = useContext(AppContent); 
+  const { products, getProductsData } = useContext(AppContent);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const [filtersState, setFiltersState] = useState({
@@ -32,14 +32,14 @@ const ShopPage = () => {
 
   const applyFilters = () => {
     let filtered = products;
-  
+
     // Filter by category if it's not "all"
     if (filtersState.category !== "all") {
       filtered = filtered.filter(
         (product) => product.category.trim().toLowerCase() === filtersState.category.trim().toLowerCase()
       );
     }
-  
+
     // Filter by price range
     if (filtersState.priceRange) {
       const [minPrice, maxPrice] = filtersState.priceRange
@@ -51,10 +51,10 @@ const ShopPage = () => {
           product.price <= (maxPrice || Infinity)
       );
     }
-  
+
     setFilteredProducts(filtered);
   };
-  
+
 
   const clearFilters = () => {
     setFiltersState({ category: "all", priceRange: "" });
@@ -69,8 +69,8 @@ const ShopPage = () => {
         </p>
       </section>
 
-      <div className="flex flex-col md:flex-row justify-between w-full mt-8">
-        <div className="w-full md:w-1/4 mb-8 md:mb-0">
+      <div className="flex flex-col md:flex-row justify-between mt-8 mx-20">
+        <div className="md:w-1/10 mb-8 md:mb-0 ">
           <ShopFiltering
             filters={filters}
             filtersState={filtersState}
@@ -79,10 +79,12 @@ const ShopPage = () => {
           />
         </div>
 
-        <div className="w-full md:w-3/4">
+        <div className="md:w-11/12 ">
+        <h2 className='text-3xl mb-10 ml-9'>ALL COLLECTIONS ------</h2>
           <ProductCard products={filteredProducts} />
         </div>
       </div>
+
     </>
   );
 };
