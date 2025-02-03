@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import Rating from "../../components/Rating"; 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom"; 
+import { AppContent } from "../../context/AppContext";
 
 const ProductCard = ({ products }) => {
   return (
@@ -23,6 +24,15 @@ const ProductCardItem = ({ product }) => {
     setRating(newRating);
   };
 
+  const { addToCart } = useContext(AppContent); 
+
+
+  const handleAddToCart = () => {
+    
+    const size = "M"; 
+    addToCart(product._id, size); 
+  };
+
 
   const productPrice = Array.isArray(product.price) ? product.price[0] : product.price;
 
@@ -30,7 +40,7 @@ const ProductCardItem = ({ product }) => {
     <div className="overflow-hidden w-full h-full max-w-sm mx-auto relative group">
       <Link to={`/product/${product._id}`} className="block">
         <i className="ri-shopping-bag-line absolute top-2 right-4 text-lg text-black bg-white rounded-full px-2 py-1 shadow-sm cursor-pointer opacity-0 group-hover:opacity-100 transform translate-x-full group-hover:translate-x-0 transition-all duration-300"></i>
-        <i className="ri-heart-line absolute top-12 right-4 text-lg text-black bg-white rounded-full px-2 py-1 shadow-sm cursor-pointer opacity-0 group-hover:opacity-100 transform translate-x-full group-hover:translate-x-0 transition-all duration-300"></i>
+        <i onClick={handleAddToCart} className="ri-heart-line absolute top-12 right-4 text-lg text-black bg-white rounded-full px-2 py-1 shadow-sm cursor-pointer opacity-0 group-hover:opacity-100 transform translate-x-full group-hover:translate-x-0 transition-all duration-300"></i>
 
         <div className="container mx-auto w-[300px] h-[300px] bg-gray-100">
           {product.image && product.image.length > 0 ? (
