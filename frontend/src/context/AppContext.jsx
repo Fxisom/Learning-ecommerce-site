@@ -17,7 +17,18 @@ export const AppContextProvider = (props) => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const navigate = useNavigate();
+  const [token, setToken] = useState('')
  
+  useEffect(() => {
+    if (!token && localStorage.getItem('token')) {
+        setToken(localStorage.getItem('token'))
+        getUserCart(localStorage.getItem('token'))
+    }
+    if (token) {
+      getUserCart(token)
+  }
+    
+}, [token])
 
 
   const addToCart = async (itemId, size) => {
@@ -42,7 +53,16 @@ export const AppContextProvider = (props) => {
         cartData[itemId][size] = 1;
     }
     setCartItems(cartData);
+    if (token) {
+      try {
 
+          await axios.post(backendUrl + '/api/cart/add', { itemId, size }, { headers: { token } })
+
+      } catch (error) {
+          console.log(error)
+          toast.error(error.message)
+      }
+  }
 
 
 }
@@ -69,7 +89,31 @@ const updateQuantity = async (itemId, size, quantity) => {
   cartData[itemId][size] = quantity;
 
   setCartItems(cartData)
+  if (token) {
+    try {
+
+        await axios.post(backendUrl + '/api/cart/update', { itemId, size, quantity }, { headers: { token } })
+
+    } catch (error) {
+        console.log(error)
+        toast.error(error.message)
+    }
 }
+}
+
+const getUserCart = async ( token ) => {
+  try {
+      
+      const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
+      if (response.data.success) {
+          setCartItems(response.data.cartData)
+      }
+  } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+  }
+}
+
 const getCartAmount = () => {
   let totalAmount = 0;
   for (const items in cartItems) {
@@ -151,7 +195,7 @@ const getCartAmount = () => {
     setUserData,
     getUserData,
     currency ,addToCart,setCartItems,cartItems,updateQuantity,
-    getCartCount, navigate,delivery_fee,getCartAmount
+    getCartCount, navigate,delivery_fee,getCartAmount,token, setToken,getUserCart
   };
 
   return <AppContent.Provider value={value}>{props.children}</AppContent.Provider>;
