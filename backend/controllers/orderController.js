@@ -37,6 +37,22 @@ const placeOrder = async (req,res) => {
 
 
 
+
+// All Orders data for Admin Panel
+const allOrders = async (req,res) => {
+
+    try {
+        
+        const orders = await orderModel.find({})
+        res.json({success:true,orders})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+
+}
+
 // User Order Data For Forntend
 const userOrders = async (req,res) => {
     try {
@@ -52,6 +68,19 @@ const userOrders = async (req,res) => {
     }
 }
 
+// update order status from Admin Panel
+const updateStatus = async (req,res) => {
+    try {
+        
+        const { orderId, status } = req.body
 
+        await orderModel.findByIdAndUpdate(orderId, { status })
+        res.json({success:true,message:'Status Updated'})
 
-export {placeOrder,  userOrders}
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {placeOrder, allOrders, userOrders, updateStatus}
