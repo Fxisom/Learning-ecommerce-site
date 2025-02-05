@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { backendUrl, setIsLoggedin, getUserData,getUserCart,setToken } = useContext(AppContent);
+    const { backendUrl, setIsLoggedin, getUserData,getUserCart,setToken,getUserWishlist } = useContext(AppContent);
 
     const [state, setState] = useState("Sign Up");
     const [name, setName] = useState("");
@@ -29,6 +29,7 @@ const Login = () => {
                     getUserData();
                     await getUserCart(data.token);  // Fetch cart after registration
                     navigate("/");
+                    await getUserWishlist(data.token);
                 } else {
                     toast.error(data.message);
                 }
@@ -41,6 +42,7 @@ const Login = () => {
                     getUserData();
                     await getUserCart(data.token);  // Fetch cart after login
                     navigate("/");
+                    await getUserWishlist(data.token);
                 } else {
                     toast.error(data.message);
                 }

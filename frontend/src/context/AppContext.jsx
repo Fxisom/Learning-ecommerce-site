@@ -16,8 +16,51 @@ export const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(false);
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
+  const [wishlistItems, setWishlistItems] = useState({});
   const navigate = useNavigate();
   const [token, setToken] = useState('')
+
+
+  
+
+const addToWishlist = async (itemId) => {
+    try {
+        await axios.post(`${backendUrl}/api/wishlist/add`, { itemId }, { headers: { token } });
+        setWishlistItems(prev => ({ ...prev, [itemId]: true }));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const removeFromWishlist = async (itemId) => {
+    try {
+        await axios.post(`${backendUrl}/api/wishlist/remove`, { itemId }, { headers: { token } });
+        setWishlistItems(prev => {
+            const updated = { ...prev };
+            delete updated[itemId];
+            return updated;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getUserWishlist = async (token) => {
+    try {
+        const response = await axios.post(`${backendUrl}/api/wishlist/get`, {}, { headers: { token } });
+        if (response.data.success) {
+            setWishlistItems(response.data.wishlistData);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+useEffect(() => {
+  if (token) {
+    getUserWishlist(token);
+  }
+}, [token]);
  
   useEffect(() => {
     if (!token && localStorage.getItem('token')) {
@@ -195,7 +238,7 @@ const getCartAmount = () => {
     setUserData,
     getUserData,
     currency ,addToCart,setCartItems,cartItems,updateQuantity,
-    getCartCount, navigate,delivery_fee,getCartAmount,token, setToken,getUserCart
+    getCartCount, navigate,delivery_fee,getCartAmount,token, setToken,getUserCart,addToWishlist,removeFromWishlist,getUserWishlist,wishlistItems,setWishlistItems
   };
 
   return <AppContent.Provider value={value}>{props.children}</AppContent.Provider>;

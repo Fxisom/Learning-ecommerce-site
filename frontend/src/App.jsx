@@ -15,7 +15,7 @@ import PlaceOrder from './pages/shop/PlaceOrder';
 import Orders from './pages/shop/Orders';
 import About from './pages/About';
 import Contact from './pages/Contact';
-
+import Wishlist from './pages/shop/wishlist';
 
 
 function App() {
@@ -40,6 +40,7 @@ function App() {
         <Route path='/orders' element={<Orders />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/wishlist' element={<Wishlist />} />
 
 
 

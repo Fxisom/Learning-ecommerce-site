@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     resetOtp: {type:String , default:''},
     resetOtpExpireAt:{type: Number, default : 0},
     cartData: { type: Object, default: {} },
+    wishlistData: { type: Object, default: {} },
 },{ minimize: false })
 
 const userModel = mongoose.models.user || mongoose.model('user',userSchema)

@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 const Navbar = () => {
 
     const navigate = useNavigate()
-    const { getCartCount,userData, backendUrl, setUserData, setIsLoggedin, setToken ,setCartItems } = useContext(AppContent)
+    const { getCartCount,userData, backendUrl, setUserData, setIsLoggedin, setToken ,setCartItems,setWishlistItems } = useContext(AppContent)
 
     const sendVerificationOtp = async () => {
         try {
@@ -38,6 +38,7 @@ const Navbar = () => {
             localStorage.removeItem('token')
             setToken('')
             setCartItems({})
+            setWishlistItems({})
         } catch (error) {
             toast.error(error.message)
         }
