@@ -16,7 +16,7 @@ const filters = {
 const ShopPage = () => {
   const { products, getProductsData } = useContext(AppContent);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [sortType, setSortType] = useState("relevant");
   const [filtersState, setFiltersState] = useState({
     category: "all",
     priceRange: "",
@@ -27,20 +27,22 @@ const ShopPage = () => {
   }, []);
 
   useEffect(() => {
-    applyFilters();
-  }, [filtersState, products]); // Apply filters whenever filters change or new products are fetched
+    applyFiltersAndSort();
+  }, [filtersState, products, sortType]); // Apply filters and sorting whenever filters or sorting change
 
-  const applyFilters = () => {
+  const applyFiltersAndSort = () => {
     let filtered = products;
 
-    // Filter by category if it's not "all"
+    // Apply category filter
     if (filtersState.category !== "all") {
       filtered = filtered.filter(
-        (product) => product.category.trim().toLowerCase() === filtersState.category.trim().toLowerCase()
+        (product) =>
+          product.category.trim().toLowerCase() ===
+          filtersState.category.trim().toLowerCase()
       );
     }
 
-    // Filter by price range
+    // Apply price range filter
     if (filtersState.priceRange) {
       const [minPrice, maxPrice] = filtersState.priceRange
         .split("-")
@@ -52,9 +54,26 @@ const ShopPage = () => {
       );
     }
 
+    // Apply sorting
+    switch (sortType) {
+      case "low-high":
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case "high-low":
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case "a-z":
+        filtered.sort((a, b) => a.name.localeCompare(b.name)); // Adjust this to the correct property
+        break;
+      case "z-a":
+        filtered.sort((a, b) => b.name.localeCompare(a.name)); // Adjust this to the correct property
+        break;
+      default:
+        break;
+    }
+
     setFilteredProducts(filtered);
   };
-
 
   const clearFilters = () => {
     setFiltersState({ category: "all", priceRange: "" });
@@ -70,7 +89,7 @@ const ShopPage = () => {
       </section>
 
       <div className="flex flex-col md:flex-row justify-between mt-8 mx-20">
-        <div className="md:w-1/10 mb-8 md:mb-0 ">
+        <div className="md:w-1/10 mb-8 md:mb-0">
           <ShopFiltering
             filters={filters}
             filtersState={filtersState}
@@ -79,17 +98,31 @@ const ShopPage = () => {
           />
         </div>
 
-        <div className="md:w-11/12 ">
-        <h2 className='text-3xl mb-10 ml-9'>ALL COLLECTIONS ------</h2>
+        <div className="md:w-11/12">
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-3xl ml-9">ALL COLLECTIONS ------</h2>
+            <select
+              onChange={(e) => setSortType(e.target.value)}
+              className="border-2 border-gray-300 text-sm px-2"
+            >
+              <option value="relevant">Sort by: Relevant</option>
+              <option value="a-z">Sort by: A-Z</option>
+              <option value="z-a">Sort by: Z-A</option>
+              <option value="low-high">Sort by: Low to High</option>
+              <option value="high-low">Sort by: High to Low</option>
+            </select>
+          </div>
           <ProductCard products={filteredProducts} />
         </div>
       </div>
-
     </>
   );
 };
 
 export default ShopPage;
+
+
+
 
 
 
