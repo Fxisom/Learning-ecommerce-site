@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 const Navbar = () => {
 
     const navigate = useNavigate()
-    const { getCartCount,userData, backendUrl, setUserData, setIsLoggedin, setToken ,setCartItems,setWishlistItems } = useContext(AppContent)
+    const { getCartCount, userData, backendUrl, setUserData, setIsLoggedin, setToken, setCartItems, setWishlistItems } = useContext(AppContent)
 
     const sendVerificationOtp = async () => {
         try {
@@ -50,21 +50,43 @@ const Navbar = () => {
             {/* Sub-header bar with Sign In */}
             <div className="sub-header bg-black text-white py-2 text-sm flex justify-between px-4 items-center">
                 <span>Free shipping, 30-day return or refund guarantee.</span>
-                {userData ? <div className='w-8 h-8 flex justify-center items-center rounded-full bg-white text-black relative group'>{userData.name[0].toUpperCase()}
-                    <div className='absolute hidden group-hover:block top-full right-0 z-10 text-black pt-10'>
-                        <ul className='list-none m-0 p-2 bg-gray-100 text-sm rounded shadow-lg'>
-                            {!userData.isAccountVerified && <li onClick={sendVerificationOtp} className='py-1 px-2 hover:bg-gray-200 cursor-pointer'>Verify email</li>}
-                            <li onClick={()=>navigate('/orders')} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Orders</li>
-                            <li onClick={logout} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Logout</li>
-                        </ul>
+                {userData ? (
+                    <div className="relative group">
+                        <div className="w-8 h-8 flex justify-center items-center rounded-full bg-white text-black cursor-pointer">
+                            {userData.name[0].toUpperCase()}
+                        </div>
+                        {/* Dropdown Menu */}
+                        <div className="absolute hidden group-hover:flex flex-col hover:flex top-full right-0 z-10 text-black pt-2 bg-gray-100 text-sm rounded shadow-lg min-w-[120px]">
+                            {!userData.isAccountVerified && (
+                                <button
+                                    onClick={sendVerificationOtp}
+                                    className="py-2 px-4 hover:bg-gray-200 text-left w-full"
+                                >
+                                    Verify email
+                                </button>
+                            )}
+                            <button
+                                onClick={() => navigate('/orders')}
+                                className="py-2 px-4 hover:bg-gray-200 text-left w-full"
+                            >
+                                Orders
+                            </button>
+                            <button
+                                onClick={logout}
+                                className="py-2 px-4 hover:bg-gray-200 text-left w-full"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     </div>
-                </div> : <div className="flex space-x-4 items-center">
+                ) : (
+                    <div className="flex space-x-4 items-center">
+                        <button onClick={() => navigate('/login')} className="hover:underline">
+                            Sign In
+                        </button>
+                    </div>
+                )}
 
-                    <button onClick={() => navigate('/login')} className="hover:underline">
-                        Sign In
-                    </button>
-
-                </div>}
 
             </div>
 
@@ -74,7 +96,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <div className="nav__logo">
                     <Link><img src="/logo_1.png" alt="Wear4U Logo" className='w-24 h-auto' />
-</Link>
+                    </Link>
                 </div>
 
                 {/* Navigation Links */}
@@ -101,11 +123,11 @@ const Navbar = () => {
                         </Link>
                     </span>
                     <span className="hover:text-primary">
-    <Link to='/cart' className='flex items-center'>
-        <i className="ri-shopping-bag-line"></i>
-        <sup className='text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center'>{getCartCount()}</sup>
-    </Link>
-</span>
+                        <Link to='/cart' className='flex items-center'>
+                            <i className="ri-shopping-bag-line"></i>
+                            <sup className='text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center'>{getCartCount()}</sup>
+                        </Link>
+                    </span>
 
                     <span className="hover:text-primary">
                         <Link to='/wishlist'>
