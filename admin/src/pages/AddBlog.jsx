@@ -11,7 +11,7 @@ const AddBlog = ({ token }) => {
     const [author, setAuthor] = useState('');
     const [tags, setTags] = useState('');
     const [image, setImage] = useState(null);
-    const [preview, setPreview] = useState(null); 
+    const [preview, setPreview] = useState(null);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -43,7 +43,7 @@ const AddBlog = ({ token }) => {
                 setAuthor('');
                 setTags('');
                 setImage(null);
-                setPreview(null); 
+                setPreview(null);
             } else {
                 toast.error(response.data.message);
             }
@@ -54,36 +54,73 @@ const AddBlog = ({ token }) => {
     };
 
     return (
-        <form onSubmit={onSubmitHandler} className="flex flex-col w-full items-start gap-3">
-            <div>
-                <p className="mb-2">Upload Image</p>
-                <label htmlFor="blogImage">
-                    <img className="w-20" src={preview || assets.upload_area} alt="Upload preview" />
+        <form onSubmit={onSubmitHandler} className="flex flex-col w-full max-w-xl mx-auto bg-white shadow-md p-6 rounded-2xl gap-4">
+            {/* Image Upload Section */}
+            <div className="flex items-center gap-4">
+                <label htmlFor="blogImage" className="cursor-pointer">
+                    <img className="w-28 h-28 object-cover border rounded-xl" src={preview || assets.upload_area} alt="Upload preview" />
                     <input onChange={handleImageChange} type="file" id="blogImage" hidden />
                 </label>
+                <p className="text-sm text-gray-600">Click the image to upload a blog cover</p>
             </div>
 
-            <div className="w-full">
-                <p className="mb-2">Title</p>
-                <input onChange={(e) => setTitle(e.target.value)} value={title} className="w-full px-3 py-2" type="text" placeholder="Blog title" required />
+            {/* Title Input */}
+            <div>
+                <label className="block mb-1 font-semibold text-gray-700">Title</label>
+                <input
+                    onChange={(e) => setTitle(e.target.value)}
+                    value={title}
+                    className="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-indigo-300"
+                    type="text"
+                    placeholder="Blog title"
+                    required
+                />
             </div>
 
-            <div className="w-full">
-                <p className="mb-2">Content</p>
-                <textarea onChange={(e) => setContent(e.target.value)} value={content} className="w-full px-3 py-2" placeholder="Write blog content here" required />
+            {/* Content Input */}
+            <div>
+                <label className="block mb-1 font-semibold text-gray-700">Content</label>
+                <textarea
+                    onChange={(e) => setContent(e.target.value)}
+                    value={content}
+                    className="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-indigo-300 resize-none h-32"
+                    placeholder="Write blog content here"
+                    required
+                />
             </div>
 
-            <div className="w-full">
-                <p className="mb-2">Author</p>
-                <input onChange={(e) => setAuthor(e.target.value)} value={author} className="w-full px-3 py-2" type="text" placeholder="Author name" required />
+            {/* Author Input */}
+            <div>
+                <label className="block mb-1 font-semibold text-gray-700">Author</label>
+                <input
+                    onChange={(e) => setAuthor(e.target.value)}
+                    value={author}
+                    className="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-indigo-300"
+                    type="text"
+                    placeholder="Author name"
+                    required
+                />
             </div>
 
-            <div className="w-full">
-                <p className="mb-2">Tags</p>
-                <input onChange={(e) => setTags(e.target.value)} value={tags} className="w-full px-3 py-2" type="text" placeholder="Tags (comma separated)" />
+            {/* Tags Input */}
+            <div>
+                <label className="block mb-1 font-semibold text-gray-700">Tags</label>
+                <input
+                    onChange={(e) => setTags(e.target.value)}
+                    value={tags}
+                    className="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-indigo-300"
+                    type="text"
+                    placeholder="Tags (comma separated)"
+                />
             </div>
 
-            <button type="submit" className="w-28 py-3 mt-4 bg-black text-white">ADD BLOG</button>
+            {/* Submit Button */}
+            <button
+                type="submit"
+                className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl focus:outline-none focus:ring focus:ring-indigo-300 mt-2"
+            >
+                Add Blog
+            </button>
         </form>
     );
 };
@@ -93,4 +130,5 @@ AddBlog.propTypes = {
 };
 
 export default AddBlog;
+
 

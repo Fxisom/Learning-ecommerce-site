@@ -1,20 +1,27 @@
 import { assets } from '../assets/assets';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 
 const Navbar = ({ setToken }) => {
   return (
-    <div className='flex items-center py-2 px-[4%] justify-between'>
-      <img className='w-[max(10%,80px)]' src={assets.logo_1} alt="Logo" />
-      <button onClick={() => setToken('')} className='bg-gray-600 text-white px-5 py-2 sm:px-7 sm:py-2 rounded-full text-xs sm:text-sm'>
+    <nav className="flex items-center justify-between py-4 px-6 bg-white ">
+      {/* Logo */}
+      <img className="w-20 md:w-28 object-contain" src={assets.logo_1} alt="Logo" />
+
+      {/* Logout Button */}
+      <button
+        onClick={() => setToken('')}
+        className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition duration-200"
+      >
         Logout
       </button>
-    </div>
+    </nav>
   );
 };
 
 Navbar.propTypes = {
-  setToken: PropTypes.func.isRequired, // Validate that setToken is a required function
+  setToken: PropTypes.func.isRequired,
 };
 
 export default Navbar;
+
 

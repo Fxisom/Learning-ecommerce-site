@@ -42,30 +42,36 @@ const BlogList = ({ token }) => {
   }, []);
 
   return (
-    <>
-      <p className="mb-2">All Blog Posts</p>
-      <div className="flex flex-col gap-2">
+    <div className="p-4 bg-white shadow rounded-lg">
+      <h2 className="text-xl font-semibold mb-4">All Blog Posts</h2>
+      <div className="flex flex-col gap-4">
         {/* Table Headers */}
-        <div className="hidden md:grid grid-cols-[1fr_3fr_2fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm">
-          <b>Image</b>
-          <b>Title</b>
-          <b>Author</b>
-          <b className="text-center">Action</b>
+        <div className="hidden md:grid grid-cols-[1fr_3fr_2fr_1fr] items-center py-2 px-4 bg-gray-100 text-sm font-bold border-b">
+          <span>Image</span>
+          <span>Title</span>
+          <span>Author</span>
+          <span className="text-center">Action</span>
         </div>
 
         {/* Blog List */}
         {blogs.map((blog, index) => (
-          <div className="grid grid-cols-[1fr_3fr_2fr] md:grid-cols-[1fr_3fr_2fr_1fr] items-center gap-2 py-1 px-2 border text-sm" key={index}>
-            <img className="w-12 h-12 object-cover" src={blog.image} alt="Blog" />
-            <p>{blog.title}</p>
-            <p>{blog.author}</p>
-            <p onClick={() => removeBlog(blog._id)} className="text-right md:text-center cursor-pointer text-lg text-red-500">
-              X
-            </p>
+          <div
+            key={index}
+            className="grid grid-cols-[1fr_3fr_2fr] md:grid-cols-[1fr_3fr_2fr_1fr] items-center gap-4 py-2 px-4 border-b bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+          >
+            <img className="w-16 h-16 object-cover rounded-md" src={blog.image} alt="Blog" />
+            <p className="text-gray-700 font-medium truncate">{blog.title}</p>
+            <p className="text-gray-500">{blog.author}</p>
+            <button
+              onClick={() => removeBlog(blog._id)}
+              className="text-red-500 font-semibold hover:underline cursor-pointer text-center"
+            >
+              Remove
+            </button>
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -74,3 +80,4 @@ BlogList.propTypes = {
 };
 
 export default BlogList;
+

@@ -1,39 +1,64 @@
-import {NavLink} from 'react-router-dom'
-import {assets} from '../assets/assets'
+import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { assets } from '../assets/assets';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Sidebar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const menuItems = [
+    { to: "/add", label: "Add Items", icon: assets.add_icon },
+    { to: "/list", label: "List Items", icon: assets.order_icon },
+    { to: "/orders", label: "Orders", icon: assets.order_icon },
+    { to: "/blog", label: "Add Blogs", icon: assets.add_icon },
+    { to: "/bloglist", label: "List Blogs", icon: assets.order_icon },
+  ];
+
   return (
-    <div className='w-[18%] min-h-screen border-r-2 '>
-       <div className='f;ex f;ex-col pt-6 pl-[20%] text-[15px]'>
-          
-          <NavLink className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l' to="/add">
-            <img className='w-5 h-5' src={assets.add_icon} alt="" />
-            <p className='hidden md:block'>Add Items</p>
+    <aside
+      className={`${
+        isCollapsed ? "w-[6%]" : "w-[18%]"
+      } min-h-screen bg-gray-50 border-r border-gray-200 transition-all duration-300`}
+    >
+      {/* Collapse Toggle */}
+      <div className="flex justify-end pr-4 pt-4">
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 rounded-full hover:bg-gray-100"
+        >
+          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex flex-col pt-6 space-y-3">
+        {menuItems.map((item, index) => (
+          <NavLink
+            key={index}
+            to={item.to}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-md font-medium ${
+                isActive
+                  ? "bg-blue-100 text-blue-600 border-l-4 border-blue-500"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <img
+              className={`w-5 h-5 transition-transform ${
+                isCollapsed ? "mx-auto" : ""
+              }`}
+              src={item.icon}
+              alt={`${item.label} Icon`}
+            />
+            {!isCollapsed && <span className="hidden md:block">{item.label}</span>}
           </NavLink>
+        ))}
+      </nav>
+    </aside>
+  );
+};
 
-          <NavLink className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l' to="/list">
-            <img className='w-5 h-5' src={assets.order_icon} alt="" />
-            <p className='hidden md:block'>List Items</p>
-          </NavLink>
+export default Sidebar;
 
-          <NavLink className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l' to="/orders">
-            <img className='w-5 h-5' src={assets.order_icon} alt="" />
-            <p className='hidden md:block'>Orders</p>
-          </NavLink>
 
-          <NavLink className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l' to="/blog">
-            <img className='w-5 h-5' src={assets.add_icon} alt="" />
-            <p className='hidden md:block'>Add Blogs</p>
-          </NavLink>
-
-          <NavLink className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l' to="/bloglist">
-            <img className='w-5 h-5' src={assets.add_icon} alt="" />
-            <p className='hidden md:block'>List Blogs</p>
-          </NavLink>
-
-       </div>
-    </div>
-  )
-}
-
-export default Sidebar

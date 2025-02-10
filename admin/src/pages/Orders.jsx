@@ -19,7 +19,7 @@ const Orders = ({ token }) => {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || 'Something went wrong');
     }
   };
 
@@ -32,10 +32,10 @@ const Orders = ({ token }) => {
       );
       if (response.data.success) {
         await fetchAllOrders();
+        toast.success('Order status updated successfully');
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || 'Something went wrong');
     }
   };
 
@@ -44,46 +44,50 @@ const Orders = ({ token }) => {
   }, [token]);
 
   return (
-    <div>
-      <h3>Order Page</h3>
-      <div>
+    <div className="p-5">
+      <h3 className="text-xl font-bold mb-5">Orders</h3>
+      <div className="space-y-4">
         {orders.map((order, index) => (
           <div
             key={index}
-            className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
+            className="grid grid-cols-1 md:grid-cols-[1fr_3fr_1fr_1fr_1fr] gap-5 items-start border rounded-lg p-5 bg-white shadow-sm"
           >
-            <img className="w-12" src={assets.parcel_icon} alt="" />
+            <img className="w-16" src={assets.parcel_icon} alt="Order Icon" />
             <div>
-              <div>
+              <h4 className="font-semibold text-gray-700">Order Details</h4>
+              <ul className="list-disc list-inside text-sm text-gray-600">
                 {order.items.map((item, itemIndex) => (
-                  <p className="py-0.5" key={itemIndex}>
-                    {item.name} x {item.quantity} <span>{item.size}</span>
-                    {itemIndex !== order.items.length - 1 && ','}
-                  </p>
+                  <li key={itemIndex}>
+                    {item.name} x {item.quantity} {item.size && `(${item.size})`}
+                  </li>
                 ))}
-              </div>
-              <p className="mt-3 mb-2 font-medium">
-                {order.address.firstName + ' ' + order.address.lastName}
+              </ul>
+              <p className="mt-3 text-sm font-medium text-gray-700">
+                {order.address.firstName} {order.address.lastName}
               </p>
-              <div>
-                <p>{order.address.street + ','}</p>
-                <p>
-                  {order.address.city + ', ' + order.address.state + ', ' + order.address.country + ', ' + order.address.zipcode}
-                </p>
-              </div>
-              <p>{order.address.phone}</p>
+              <p className="text-sm text-gray-600">
+                {order.address.street}, {order.address.city}, {order.address.state},{' '}
+                {order.address.country}, {order.address.zipcode}
+              </p>
+              <p className="text-sm text-gray-600">Phone: {order.address.phone}</p>
             </div>
             <div>
-              <p className="text-sm sm:text-[15px]">Items: {order.items.length}</p>
-              <p className="mt-3">Method: {order.paymentMethod}</p>
-              <p>Payment: {order.payment ? 'Done' : 'Pending'}</p>
-              <p>Date: {new Date(order.date).toLocaleDateString()}</p>
+              <p className="text-sm font-medium">Items: {order.items.length}</p>
+              <p className="mt-2 text-sm">Method: {order.paymentMethod}</p>
+              <p className={`text-sm ${order.payment ? 'text-green-600' : 'text-red-600'}`}>
+                Payment: {order.payment ? 'Done' : 'Pending'}
+              </p>
+              <p className="text-sm">Date: {new Date(order.date).toLocaleDateString()}</p>
             </div>
-            <p className="text-sm sm:text-[15px]">
+            <p className="text-lg font-semibold">
               {currency}
               {order.amount}
             </p>
-            <select onChange={(event) => statusHandler(event, order._id)} value={order.status} className="p-2 font-semibold">
+            <select
+              onChange={(event) => statusHandler(event, order._id)}
+              value={order.status}
+              className="p-2 border rounded-md bg-gray-50 font-medium text-gray-700 focus:ring-2 focus:ring-blue-400"
+            >
               <option value="Order Placed">Order Placed</option>
               <option value="Packing">Packing</option>
               <option value="Shipped">Shipped</option>
@@ -97,10 +101,10 @@ const Orders = ({ token }) => {
   );
 };
 
-// ✅ Prop Validation
 Orders.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
 export default Orders;
+
 
