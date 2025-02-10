@@ -39,6 +39,24 @@ const Orders = ({ token }) => {
     }
   };
 
+  const paymentHandler = async (orderId, paymentStatus) => {
+    try {
+      const response = await axios.post(
+        backendUrl + '/api/order/payment-status',
+        { orderId, payment: paymentStatus },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        await fetchAllOrders();
+        toast.success(`Payment status updated to ${paymentStatus ? 'Paid' : 'Unpaid'}`);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Something went wrong');
+    }
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
@@ -94,6 +112,16 @@ const Orders = ({ token }) => {
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>
             </select>
+            {order.paymentMethod === 'COD' && (
+              <button
+                onClick={() => paymentHandler(order._id, !order.payment)}
+                className={`mt-2 px-4 py-2 rounded-md ${
+                  order.payment ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+                } text-white`}
+              >
+                {order.payment ? 'Mark as Unpaid' : 'Mark as Paid'}
+              </button>
+            )}
           </div>
         ))}
       </div>

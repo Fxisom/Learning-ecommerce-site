@@ -21,7 +21,7 @@ const Sidebar = () => {
       } min-h-screen bg-gray-50 border-r border-gray-200 transition-all duration-300`}
     >
       {/* Collapse Toggle */}
-      <div className="flex justify-end pr-4 pt-4">
+      <div className="flex justify-end pr-8 pt-4">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-2 rounded-full hover:bg-gray-100"

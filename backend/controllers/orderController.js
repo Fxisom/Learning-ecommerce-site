@@ -149,4 +149,20 @@ const updateStatus = async (req,res) => {
     }
 }
 
-export {placeOrder, allOrders, userOrders, updateStatus,placeOrderRazorpay,verifyRazorpay}
+// Update payment status
+const updatePaymentStatus = async (req, res) => {
+    try {
+        const { orderId, payment } = req.body;
+
+        await orderModel.findByIdAndUpdate(orderId, { payment });
+        res.json({ success: true, message: 'Payment status updated successfully' });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+
+
+
+export {placeOrder, allOrders, userOrders, updateStatus,placeOrderRazorpay,verifyRazorpay,updatePaymentStatus}
