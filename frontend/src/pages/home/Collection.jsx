@@ -10,7 +10,7 @@ const Collection = () => {
           </h1>
           <button className="text-black mt-1 tracking-wider hover:border-black relative group">
             SHOP NOW
-            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-red-500 transform group-hover:w-1/2 transition-all duration-300"></span>
+            <span className="absolute bottom-0 left-0 w-full h-[2px] bg-red-500 transform group-hover:w-1/2 transition-all duration-300"></span>
           </button>
         </div>
 

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { AppContent } from "../../context/AppContext";
 import ShopFiltering from "./ShopFiltering";
+import Pagination from "../../components/Pagination";
 
 const filters = {
   categories: ["all", "men", "women", "kids"],
@@ -22,18 +23,22 @@ const ShopPage = () => {
     priceRange: "",
   });
 
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
+
   useEffect(() => {
-    getProductsData(); // Fetch products when component mounts
+    getProductsData(); 
   }, []);
 
   useEffect(() => {
     applyFiltersAndSort();
-  }, [filtersState, products, sortType]); // Apply filters and sorting whenever filters or sorting change
+    setCurrentPage(1); 
+  }, [filtersState, products, sortType]);
 
   const applyFiltersAndSort = () => {
     let filtered = products;
 
-    // Apply category filter
     if (filtersState.category !== "all") {
       filtered = filtered.filter(
         (product) =>
@@ -42,7 +47,6 @@ const ShopPage = () => {
       );
     }
 
-    // Apply price range filter
     if (filtersState.priceRange) {
       const [minPrice, maxPrice] = filtersState.priceRange
         .split("-")
@@ -54,7 +58,6 @@ const ShopPage = () => {
       );
     }
 
-    // Apply sorting
     switch (sortType) {
       case "low-high":
         filtered.sort((a, b) => a.price - b.price);
@@ -63,10 +66,10 @@ const ShopPage = () => {
         filtered.sort((a, b) => b.price - a.price);
         break;
       case "a-z":
-        filtered.sort((a, b) => a.name.localeCompare(b.name)); // Adjust this to the correct property
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "z-a":
-        filtered.sort((a, b) => b.name.localeCompare(a.name)); // Adjust this to the correct property
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
         break;
       default:
         break;
@@ -79,6 +82,11 @@ const ShopPage = () => {
     setFiltersState({ category: "all", priceRange: "" });
   };
 
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+
   return (
     <>
       <section className="bg-blue-200 py-16 px-4 text-center mt-8 w-11/12 mx-auto rounded-lg">
@@ -88,7 +96,7 @@ const ShopPage = () => {
         </p>
       </section>
 
-      <div className="flex flex-col md:flex-row justify-between mt-8 mx-20">
+      <div className="flex flex-col md:flex-row justify-between mt-8 mx-20 mb-10">
         <div className="md:w-1/10 mb-8 md:mb-0">
           <ShopFiltering
             filters={filters}
@@ -112,7 +120,17 @@ const ShopPage = () => {
               <option value="high-low">Sort by: High to Low</option>
             </select>
           </div>
-          <ProductCard products={filteredProducts} />
+
+          <ProductCard products={displayedProducts} />
+
+          {/* Use Pagination Component */}
+          {totalPages > 1 && (
+            <Pagination cla
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
         </div>
       </div>
     </>
@@ -120,6 +138,7 @@ const ShopPage = () => {
 };
 
 export default ShopPage;
+
 
 
 
