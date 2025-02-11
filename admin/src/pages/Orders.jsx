@@ -7,6 +7,10 @@ import { assets } from '../assets/assets';
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [paymentFilter, setPaymentFilter] = useState('All');
+  const [dateFilter, setDateFilter] = useState('Newest');
+  const [selectedDate, setSelectedDate] = useState('');
 
   const fetchAllOrders = async () => {
     if (!token) return;
@@ -14,7 +18,9 @@ const Orders = ({ token }) => {
     try {
       const response = await axios.post(backendUrl + '/api/order/list', {}, { headers: { token } });
       if (response.data.success) {
-        setOrders(response.data.orders.reverse());
+        const sortedOrders = response.data.orders.reverse();
+        setOrders(sortedOrders);
+        setFilteredOrders(sortedOrders);
       } else {
         toast.error(response.data.message);
       }
@@ -57,15 +63,95 @@ const Orders = ({ token }) => {
     }
   };
 
+  const handlePaymentFilterChange = (event) => {
+    setPaymentFilter(event.target.value);
+    applyFilters(event.target.value, dateFilter, selectedDate);
+  };
+
+  const handleDateFilterChange = (event) => {
+    setDateFilter(event.target.value);
+    applyFilters(paymentFilter, event.target.value, selectedDate);
+  };
+
+  const handleDateSelection = (event) => {
+    const inputDate = event.target.value;
+    setSelectedDate(inputDate);
+    applyFilters(paymentFilter, dateFilter, inputDate);
+  };
+
+  const applyFilters = (payment, date, selectedDate) => {
+    let filtered = [...orders];
+
+    if (payment !== 'All') {
+      filtered = filtered.filter(order => order.paymentMethod === payment);
+    }
+
+    if (date === 'Oldest') {
+      filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+    } else {
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    if (selectedDate) {
+      filtered = filtered.filter(order => {
+        const orderDate = new Date(order.date).toISOString().split('T')[0];
+        return orderDate === selectedDate;
+      });
+    }
+
+    setFilteredOrders(filtered);
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
 
   return (
     <div className="p-5">
-      <h3 className="text-xl font-bold mb-5">Orders</h3>
+      <div className="flex justify-between items-center mb-10">
+        <h3 className="text-3xl font-bold">Orders</h3>
+
+        {/* Payment & Date Filters - Right Aligned */}
+        <div className="flex items-center space-x-4">
+          <div>
+            <label className="mr-2 text-sm font-medium text-gray-700">Payment:</label>
+            <select
+              value={paymentFilter}
+              onChange={handlePaymentFilterChange}
+              className="p-2 border rounded-md bg-gray-50 text-gray-700 focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="All">All</option>
+              <option value="COD">COD</option>
+              <option value="Razorpay">Razorpay</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="mr-2 text-sm font-medium text-gray-700">Sort By:</label>
+            <select
+              value={dateFilter}
+              onChange={handleDateFilterChange}
+              className="p-2 border rounded-md bg-gray-50 text-gray-700 focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="Newest">Newest</option>
+              <option value="Oldest">Oldest</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="mr-2 text-sm font-medium text-gray-700">Select Date:</label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={handleDateSelection}
+              className="p-2 border rounded-md bg-gray-50 text-gray-700 focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-4">
-        {orders.map((order, index) => (
+        {filteredOrders.map((order, index) => (
           <div
             key={index}
             className="grid grid-cols-1 md:grid-cols-[1fr_3fr_1fr_1fr_1fr] gap-5 items-start border rounded-lg p-5 bg-white shadow-sm"
@@ -134,5 +220,9 @@ Orders.propTypes = {
 };
 
 export default Orders;
+
+
+
+
 
 
