@@ -23,17 +23,23 @@ const ShopPage = () => {
     priceRange: "",
   });
 
-  
+
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
   useEffect(() => {
-    getProductsData(); 
+    setLoading(true);
+    getProductsData().finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    applyFiltersAndSort();
-    setCurrentPage(1); 
+    setLoading(true);
+    setTimeout(() => {
+      applyFiltersAndSort();
+      setCurrentPage(1);
+      setLoading(false);
+    }, 500);
   }, [filtersState, products, sortType]);
 
   const applyFiltersAndSort = () => {
@@ -82,7 +88,6 @@ const ShopPage = () => {
     setFiltersState({ category: "all", priceRange: "" });
   };
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
   const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
@@ -121,11 +126,22 @@ const ShopPage = () => {
             </select>
           </div>
 
-          <ProductCard products={displayedProducts} />
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {Array.from({ length: productsPerPage }).map((_, index) => (
+                <div key={index} className="animate-pulse bg-gray-200 p-4 rounded-lg shadow-md">
+                  <div className="h-40 bg-gray-300 rounded-md mb-4"></div>
+                  <div className="h-4 bg-gray-400 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-400 rounded w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ProductCard products={displayedProducts} />
+          )}
 
-          {/* Use Pagination Component */}
           {totalPages > 1 && (
-            <Pagination cla
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}
@@ -138,6 +154,7 @@ const ShopPage = () => {
 };
 
 export default ShopPage;
+
 
 
 
