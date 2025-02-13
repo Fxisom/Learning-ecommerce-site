@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { AppContent } from '../context/AppContext';
-import ProductCard from '../pages/shop/Productcard';
+import ProductCard from '../pages/shop/ProductCard';
 
 const RelatedProducts = ({ category, subCategory }) => {
   const { products } = useContext(AppContent);

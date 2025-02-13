@@ -8,12 +8,12 @@ import { toast } from 'react-toastify';
 const Product = () => {
     const { productId } = useParams();
     const { products, currency, addToCart, addToWishlist, removeFromWishlist, wishlistItems } = useContext(AppContent);
-    const [productData, setProductData] = useState(false);
+    const [productData, setProductData] = useState(null);
     const [image, setImage] = useState('');
     const [size, setSize] = useState('');
     const [rating, setRating] = useState(0);
     const [relatedProducts, setRelatedProducts] = useState([]);
-    const [isInWishlist, setIsInWishlist] = useState(false);  // Wishlist state
+    const [isInWishlist, setIsInWishlist] = useState(false);
 
     const handleAddToCart = () => {
         if (size) {
@@ -24,31 +24,26 @@ const Product = () => {
         }
     };
 
-    // Fetch product data and set related products
     const fetchProductData = async () => {
-        products.map((item) => {
+        products.forEach((item) => {
             if (item._id === productId) {
                 setProductData(item);
                 setImage(item.image[0]);
                 setRating(item.rating || 0);
-
                 const related = products.filter(
                     (product) => product.category === item.category && product._id !== productId
                 );
                 setRelatedProducts(related.slice(0, 4));
-                return null;
             }
         });
     };
 
-    // Set initial wishlist state based on context data
     useEffect(() => {
         if (wishlistItems[productId]) {
             setIsInWishlist(true);
         }
     }, [wishlistItems, productId]);
 
-    // Handle wishlist click: add or remove item from wishlist
     const handleWishlistClick = () => {
         if (isInWishlist) {
             removeFromWishlist(productData._id);
@@ -69,43 +64,41 @@ const Product = () => {
     };
 
     return productData ? (
-        <div className='pt-8'>
-            <div className='max-w-8xl mx-auto px-20 pb-10'>
-                <div className='flex gap-8 sm:gap-10 flex-col sm:flex-row'>
-                    <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
-                        <div className='flex sm:flex-col overflow-x-hidden sm:overflow-y-hidden justify-between sm:justify-normal sm:w-[18%] w-full'>
+        <div className='pt-8 px-4 sm:px-10 lg:px-20'>
+            <div className='max-w-7xl mx-auto pb-10'>
+                <div className='flex flex-col sm:flex-row gap-6 sm:gap-10'>
+                    <div className='flex-1 flex flex-col-reverse sm:flex-row gap-3'>
+                        <div className='flex sm:flex-col gap-2 sm:gap-3 sm:w-1/5 w-full overflow-auto sm:overflow-visible'>
                             {productData.image.map((item, index) => (
                                 <img
                                     onClick={() => setImage(item)}
                                     src={item}
                                     key={index}
-                                    className='w-[22%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer'
-                                    alt=""
+                                    className='w-1/4 sm:w-full cursor-pointer rounded-md border border-gray-200'
+                                    alt='Product thumbnail'
                                 />
                             ))}
                         </div>
-                        <div className='w-full sm:w-[78%]'>
-                            <img className='w-full h-auto' src={image} alt="" />
+                        <div className='w-full sm:w-4/5'>
+                            <img className='w-full h-auto rounded-md' src={image} alt='Selected product' />
                         </div>
                     </div>
 
                     <div className='flex-1'>
-                        <h1 className='font-medium text-xl mt-2'>{productData.name}</h1>
-
-                        <div className='flex items-center gap-1 mt-2'>
+                        <h1 className='text-xl font-semibold'>{productData.name}</h1>
+                        <div className='flex items-center gap-2 mt-2'>
                             <Rating rating={rating} onRatingChange={handleRatingChange} />
-                            <p className='pl-2'>{productData.reviews || 122}</p>
+                            <p className='text-gray-600'>{productData.reviews || 122} reviews</p>
                         </div>
-
                         <p className='mt-4 text-2xl font-medium'>{currency}{productData.price}</p>
-                        <p className='mt-4 text-gray-500 md:w-3/5'>{productData.description}</p>
+                        <p className='mt-4 text-gray-600'>{productData.description}</p>
                         <div className='flex flex-col gap-3 my-6'>
-                            <p>Select Size</p>
-                            <div className='flex gap-2'>
+                            <p className='font-medium'>Select Size</p>
+                            <div className='flex flex-wrap gap-2'>
                                 {productData.sizes.map((item, index) => (
                                     <button
                                         onClick={() => setSize(item)}
-                                        className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`}
+                                        className={`border py-2 px-4 rounded-md text-sm ${item === size ? 'border-orange-500' : 'border-gray-300'}`}
                                         key={index}
                                     >
                                         {item}
@@ -113,39 +106,39 @@ const Product = () => {
                                 ))}
                             </div>
                         </div>
-                        <button onClick={handleAddToCart} className='bg-black text-white px-6 py-2 text-sm active:bg-gray-700'>
-                            ADD TO CART
-                        </button>
-                        <button onClick={handleWishlistClick} className='bg-black text-white px-6 py-2 text-sm active:bg-gray-700 ml-7'>
-                            {isInWishlist ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
-                        </button>
-                        <hr className='mt-6 sm:w-4/5' />
-                        <div className='text-xs text-gray-500 mt-4 flex flex-col gap-1'>
-                            <p>100% Original product.</p>
-                            <p>Cash on delivery is available on this product.</p>
-                            <p>Easy return and exchange policy within 7 days.</p>
+                        <div className='flex flex-wrap gap-4'>
+                            <button onClick={handleAddToCart} className='bg-black text-white px-6 py-2 text-sm rounded-md hover:bg-gray-800 w-full sm:w-auto'>
+                                ADD TO CART
+                            </button>
+                            <button onClick={handleWishlistClick} className='border border-black text-black px-6 py-2 text-sm rounded-md hover:bg-black hover:text-white w-full sm:w-auto'>
+                                {isInWishlist ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
+                            </button>
+                        </div>
+                        <hr className='mt-6' />
+                        <div className='text-xs text-gray-500 mt-4 space-y-1'>
+                            <p>✅ 100% Original product.</p>
+                            <p>✅ Cash on delivery is available.</p>
+                            <p>✅ Easy return and exchange policy within 7 days.</p>
                         </div>
                     </div>
                 </div>
-
                 <div className='mt-16'>
-                    <div className='flex justify-center'>
-                        <h2 className='mb-10 text-3xl inline-block border-b-2 pb-2 border-black text-center'>
+                    <div className="flex justify-center">
+                        <h2 className="text-2xl font-semibold text-center border-b-2 pb-2 border-black">
                             Related Products
                         </h2>
                     </div>
-
-                    <div >
+                    <div className='mt-6'>
                         <ProductCard products={relatedProducts} />
                     </div>
                 </div>
-
             </div>
         </div>
     ) : (
-        <div className=' opacity-0'></div>
+        <div className='opacity-0'></div>
     );
 };
 
 export default Product;
+
 
