@@ -3,13 +3,13 @@ import { AppContent } from "../../context/AppContext";
 import ProductCard from "./ProductCard";
 
 const TrendingProduct = () => {
-  const { products } = useContext(AppContent); 
+  const { products } = useContext(AppContent);
   const [selectedCategory, setSelectedCategory] = useState("new arrivals");
   const [animateProducts, setAnimateProducts] = useState(false);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setAnimateProducts(true); 
+    setAnimateProducts(true);
   };
 
   const filteredProducts = products.filter((product) => {
@@ -26,46 +26,32 @@ const TrendingProduct = () => {
     }
   }, [animateProducts]);
 
-  const categoryButtonStyle = (isSelected) => ({
-    fontSize: "1.875rem",
-    fontWeight: "normal",
-    cursor: "pointer",
-    color: isSelected ? "#1f2937" : "#6b7280",
-    borderBottom: isSelected ? "2px solid #1f2937" : "none",
-    paddingBottom: isSelected ? "0.25rem" : "0",
-    transition: "all 0.3s ease",
-  });
-
-  const productGridStyle = {
-    marginTop: "2.25rem",
-    opacity: animateProducts ? "0" : "1",
-    transform: animateProducts ? "translateX(100px)" : "translateX(0)",
-    transition: "opacity 0.5s ease, transform 0.5s ease",
-  };
-
   return (
     <div className="p-4 mt-10">
-      <div className="mb-5 flex justify-center space-x-20">
-        <h3
-          style={categoryButtonStyle(selectedCategory === "new arrivals")}
-          onClick={() => handleCategoryChange("new arrivals")}
-        >
-          New Arrivals
-        </h3>
-        <h3
-          style={categoryButtonStyle(selectedCategory === "best sellers")}
-          onClick={() => handleCategoryChange("best sellers")}
-        >
-          Best Sellers
-        </h3>
-        <h3
-          style={categoryButtonStyle(selectedCategory === "hot sales")}
-          onClick={() => handleCategoryChange("hot sales")}
-        >
-          Hot Sales
-        </h3>
+      <div className="mb-5 flex flex-wrap justify-center gap-4 sm:space-x-10">
+        {[
+          { label: "New Arrivals", key: "new arrivals" },
+          { label: "Best Sellers", key: "best sellers" },
+          { label: "Hot Sales", key: "hot sales" },
+        ].map(({ label, key }) => (
+          <h3
+            key={key}
+            className={`text-lg sm:text-2xl cursor-pointer transition-all duration-300 pb-1 ${
+              selectedCategory === key
+                ? "text-gray-900 border-b-2 border-gray-900"
+                : "text-gray-500"
+            }`}
+            onClick={() => handleCategoryChange(key)}
+          >
+            {label}
+          </h3>
+        ))}
       </div>
-      <div style={productGridStyle}>
+      <div
+        className={`mt-9 transition-all duration-500 ${
+          animateProducts ? "opacity-0 translate-x-10" : "opacity-100 translate-x-0"
+        }`}
+      >
         <ProductCard products={filteredProducts} />
       </div>
     </div>
@@ -73,6 +59,7 @@ const TrendingProduct = () => {
 };
 
 export default TrendingProduct;
+
 
 
 
