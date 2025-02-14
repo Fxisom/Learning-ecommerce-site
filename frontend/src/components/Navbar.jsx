@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -9,6 +8,21 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { getCartCount, userData, backendUrl, setUserData, setIsLoggedin, setToken, setCartItems, setWishlistItems } = useContext(AppContent);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userMenuRef = useRef(null);
+
+  
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+                setUserMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const sendVerificationOtp = async () => {
         try {
@@ -44,37 +58,41 @@ const Navbar = () => {
     };
 
     return (
-        <header className="fixed-nav-bar w-full bg-white ">
-            {/* Sub-header */}
+        <header className="fixed-nav-bar w-full bg-white">
             <div className="sub-header bg-black text-white py-2 text-sm flex justify-between px-4 items-center">
                 <span>Free shipping, 30-day return or refund guarantee.</span>
                 {userData ? (
-                    <div className="relative group">
-                        <div className="w-8 h-8 flex justify-center items-center rounded-full bg-white text-black cursor-pointer">
+                    <div className="relative" ref={userMenuRef}>
+                        <button
+                            className="w-8 h-8 flex justify-center items-center rounded-full bg-white text-black cursor-pointer"
+                            onClick={() => setUserMenuOpen(!userMenuOpen)}
+                        >
                             {userData.name[0].toUpperCase()}
-                        </div>
-                        <div className="absolute hidden group-hover:flex flex-col top-full right-0 z-10 text-black pt-2 bg-gray-100 text-sm rounded shadow-lg min-w-[120px]">
-                            {!userData.isAccountVerified && (
+                        </button>
+                        {userMenuOpen && (
+                            <div className="absolute top-0 left-[-130px] z-10 text-black bg-gray-100 text-sm rounded shadow-lg w-[120px]">
+                                {!userData.isAccountVerified && (
+                                    <button
+                                        onClick={sendVerificationOtp}
+                                        className="py-2 px-4 hover:bg-gray-200 text-left w-full"
+                                    >
+                                        Verify Email
+                                    </button>
+                                )}
                                 <button
-                                    onClick={sendVerificationOtp}
+                                    onClick={() => navigate("/orders")}
                                     className="py-2 px-4 hover:bg-gray-200 text-left w-full"
                                 >
-                                    Verify email
+                                    Orders
                                 </button>
-                            )}
-                            <button
-                                onClick={() => navigate("/orders")}
-                                className="py-2 px-4 hover:bg-gray-200 text-left w-full"
-                            >
-                                Orders
-                            </button>
-                            <button
-                                onClick={logout}
-                                className="py-2 px-4 hover:bg-gray-200 text-left w-full"
-                            >
-                                Logout
-                            </button>
-                        </div>
+                                <button
+                                    onClick={logout}
+                                    className="py-2 px-4 hover:bg-gray-200 text-left w-full"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="flex space-x-4 items-center">
