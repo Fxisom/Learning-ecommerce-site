@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { backendUrl, currency } from '../App';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
 
 const List = ({ token }) => {
   const [list, setList] = useState([]);
@@ -45,12 +46,12 @@ const List = ({ token }) => {
       <h2 className="text-xl font-semibold mb-4">All Products List</h2>
       <div className="flex flex-col gap-4">
         {/* List Table Title */}
-        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-2 px-4 bg-gray-100 text-sm font-bold border-b">
+        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr_1fr] items-center py-2 px-4 bg-gray-100 text-sm font-bold border-b">
           <span>Image</span>
           <span>Name</span>
           <span>Category</span>
           <span>Price</span>
-          <span className="text-center">Action</span>
+          <span className="text-center">Actions</span>
         </div>
 
         {/* Product List */}
@@ -63,12 +64,19 @@ const List = ({ token }) => {
             <p className="text-gray-700 font-medium truncate">{item.name}</p>
             <p className="text-gray-500">{item.category}</p>
             <p className="text-green-600 font-semibold">{currency}{item.price}</p>
-            <button
-              onClick={() => removeProduct(item._id)}
-              className="text-red-500 font-semibold hover:underline cursor-pointer text-center"
-            >
-              Remove
-            </button>
+            <div className="flex gap-4 justify-center">
+              {/* Update Button (Link to the Update Form) */}
+              <Link to={`/update-product/${item._id}`} className="text-blue-500 font-semibold hover:underline">
+                Update
+              </Link>
+              {/* Remove Button */}
+              <button
+                onClick={() => removeProduct(item._id)}
+                className="text-red-500 font-semibold hover:underline cursor-pointer text-center"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -81,4 +89,5 @@ List.propTypes = {
 };
 
 export default List;
+
 

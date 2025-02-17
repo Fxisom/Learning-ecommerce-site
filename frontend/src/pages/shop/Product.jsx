@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContent } from '../../context/AppContext';
 import Rating from '../../components/Rating';
-import ProductCard from './ProductCard';
+import ProductCard from './Productcard';
 import { toast } from 'react-toastify';
 
 const Product = () => {
