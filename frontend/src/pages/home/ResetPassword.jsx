@@ -145,7 +145,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-[90vh] mt-6 bg-gray-100 p-4">
       {!isEmailSent && (
         <form onSubmit={onSubmitEmail} className="bg-white p-8 rounded-lg shadow-lg w-96 text-sm">
           <h1 className="text-gray-800 text-2xl font-semibold text-center mb-4">Reset Password</h1>

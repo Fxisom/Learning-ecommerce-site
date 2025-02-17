@@ -58,7 +58,7 @@ const EmailVerify = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+    <div className="flex items-center justify-center h-[90vh] mt-6 bg-gradient-to-br from-gray-100 to-gray-300 p-4">
       <form
         onSubmit={onSubmitHandler}
         className="bg-white p-8 rounded-lg shadow-lg w-96 text-sm"

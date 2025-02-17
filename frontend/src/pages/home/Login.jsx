@@ -53,7 +53,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 text-gray-800">
+        <div className="flex items-center justify-center h-[90vh] mt-6 bg-gray-100 text-gray-800 p-4">
             <div className="bg-white p-8 rounded-xl shadow-md w-full sm:w-96">
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
                     {state === "Sign Up" ? "Create Account" : "Welcome Back"}
