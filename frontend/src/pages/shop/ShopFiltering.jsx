@@ -43,6 +43,25 @@ const ShopFiltering = ({ filters, filtersState, setFiltersState, clearFilters })
             ))}
           </div>
 
+          {/* Size Filter */}
+          <div className='flex flex-col space-y-2'>
+            <h4 className='font-medium text-lg'>Size</h4>
+            <hr className='w-24 h-0.5 bg-gray-400' />
+            {filters.sizes.map((size) => (
+              <label key={size} className='flex items-center'>
+                <input
+                  type='radio'
+                  name='size'
+                  value={size}
+                  checked={filtersState.size === size}
+                  onChange={(e) => setFiltersState({ ...filtersState, size: e.target.value })}
+                  className='mr-2'
+                />
+                {size}
+              </label>
+            ))}
+          </div>
+
           {/* Price Range Filter */}
           <div className='flex flex-col space-y-2'>
             <h4 className='font-medium text-lg'>Price Range</h4>
@@ -68,7 +87,6 @@ const ShopFiltering = ({ filters, filtersState, setFiltersState, clearFilters })
           >
             Clear All
           </button>
-
         </div>
       </div>
     </div>
@@ -79,6 +97,7 @@ const ShopFiltering = ({ filters, filtersState, setFiltersState, clearFilters })
 ShopFiltering.propTypes = {
   filters: PropTypes.shape({
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    sizes: PropTypes.arrayOf(PropTypes.string).isRequired,
     priceRanges: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string.isRequired,
@@ -89,6 +108,7 @@ ShopFiltering.propTypes = {
   }).isRequired,
   filtersState: PropTypes.shape({
     category: PropTypes.string.isRequired,
+    size: PropTypes.string.isRequired,
     priceRange: PropTypes.string.isRequired,
   }).isRequired,
   setFiltersState: PropTypes.func.isRequired,

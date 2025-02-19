@@ -218,9 +218,6 @@ const getCartAmount = () => {
     getProductsData();
   }, []);
 
-  useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
 
   console.log("Backend URL:", backendUrl);
 

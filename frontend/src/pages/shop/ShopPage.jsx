@@ -6,6 +6,7 @@ import Pagination from "../../components/Pagination";
 
 const filters = {
   categories: ["all", "men", "women", "kids"],
+  sizes: ["S", "M", "L", "XL","XXL"], 
   priceRanges: [
     { label: "Under $50", min: 0, max: 50 },
     { label: "$50 - $100", min: 50, max: 100 },
@@ -21,6 +22,7 @@ const ShopPage = () => {
   const [filtersState, setFiltersState] = useState({
     category: "all",
     priceRange: "",
+    size: "", 
   });
 
 
@@ -64,6 +66,13 @@ const ShopPage = () => {
       );
     }
 
+
+    if (filtersState.size) {
+      filtered = filtered.filter((product) =>
+        product.sizes.includes(filtersState.size) 
+      );
+    }
+
     switch (sortType) {
       case "low-high":
         filtered.sort((a, b) => a.price - b.price);
@@ -85,7 +94,7 @@ const ShopPage = () => {
   };
 
   const clearFilters = () => {
-    setFiltersState({ category: "all", priceRange: "" });
+    setFiltersState({ category: "all", priceRange: "", size: "" });
   };
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);

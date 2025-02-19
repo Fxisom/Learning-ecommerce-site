@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { AppContent } from '../../context/AppContext';
 import { assets } from '../../assets/assets.js';
 import CartTotal from '../../components/CartTotal.jsx';
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(AppContent);
+  const { products, currency, cartItems, updateQuantity, navigate, isLoggedin } = useContext(AppContent);
   const [cartData, setCartData] = useState([]);
   const [inputValues, setInputValues] = useState({});
 
@@ -102,7 +103,13 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-center sm:text-end">
             <button
-              onClick={() => navigate('/place-order')}
+              onClick={() => {
+                if (!isLoggedin) {
+                  toast.info("Please log in to proceed to checkout."); // Show error toast
+                } else {
+                  navigate("/place-order"); // Navigate only if logged in
+                }
+              }}
               className="bg-black text-white text-sm my-8 px-6 py-3 w-full sm:w-auto"
             >
               PROCEED TO CHECKOUT

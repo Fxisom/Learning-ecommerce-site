@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddBlog from './pages/AddBlog';
 import BlogList from './pages/BlogList';
 import Update from './pages/Update'; // Import the Update component
+import AdminCoupons from './pages/AdminCoupons';
+import ListCoupon from './pages/ListCoupon';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
@@ -42,6 +44,8 @@ const App = () => {
                   <Route path='/bloglist' element={<BlogList token={token} />} />
                   {/* Add route for Update Product */}
                   <Route path='/update-product/:id' element={<Update token={token} />} />
+                  <Route path='/coupon' element={<AdminCoupons token={token} />} />
+                  <Route path='/list/coupon' element={<ListCoupon token={token} />} />
                 </Routes>
               </div>
             </div>

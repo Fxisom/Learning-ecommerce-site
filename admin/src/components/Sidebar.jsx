@@ -12,6 +12,8 @@ const Sidebar = () => {
     { to: "/orders", label: "Orders", icon: assets.order_icon },
     { to: "/blog", label: "Add Blogs", icon: assets.add_icon },
     { to: "/bloglist", label: "List Blogs", icon: assets.order_icon },
+    { to: "/coupon", label: "Create Coupon", icon: assets.add_icon },
+    { to: "/list/coupon", label: "List Coupon", icon: assets.order_icon },
   ];
 
   return (

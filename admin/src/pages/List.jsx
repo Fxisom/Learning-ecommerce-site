@@ -43,24 +43,24 @@ const List = ({ token }) => {
 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">All Products List</h2>
+      <h2 className="text-xl font-semibold mb-4 text-center">All Products List</h2>
       <div className="flex flex-col gap-4">
         {/* List Table Title */}
-        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr_1fr] items-center py-2 px-4 bg-gray-100 text-sm font-bold border-b">
+        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-2 px-4 bg-gray-100 text-sm font-bold border-b text-center">
           <span>Image</span>
           <span>Name</span>
           <span>Category</span>
           <span>Price</span>
-          <span className="text-center">Actions</span>
+          <span>Actions</span>
         </div>
 
         {/* Product List */}
         {list.map((item, index) => (
           <div
             key={index}
-            className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center gap-4 py-2 px-4 border-b bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center gap-4 py-2 px-4 border-b bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow text-center"
           >
-            <img className="w-16 h-16 object-cover rounded-md" src={item.image[0]} alt={item.name} />
+            <img className="w-16 h-16 object-cover rounded-md mx-auto" src={item.image[0]} alt={item.name} />
             <p className="text-gray-700 font-medium truncate">{item.name}</p>
             <p className="text-gray-500">{item.category}</p>
             <p className="text-green-600 font-semibold">{currency}{item.price}</p>
